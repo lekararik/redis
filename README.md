@@ -224,10 +224,11 @@ of the BSD license that you can find in the [COPYING][1] file included in the Re
 source distribution.
 
 Please see the [CONTRIBUTING][2] file in this source distribution for more
-information, including details on our process for security bugs/vulnerabilities.
+information. For security bugs and vulnerabilities, please see [SECURITY.md][3].
 
 [1]: https://github.com/redis/redis/blob/unstable/COPYING
 [2]: https://github.com/redis/redis/blob/unstable/CONTRIBUTING
+[3]: https://github.com/redis/redis/blob/unstable/SECURITY.md
 
 Redis internals
 ===
@@ -303,8 +304,8 @@ struct client {
     redisDb *db;
     int flags;
     list *reply;
-    char buf[PROTO_REPLY_CHUNK_BYTES];
     // ... many other fields ...
+    char buf[PROTO_REPLY_CHUNK_BYTES];
 }
 ```
 The client structure defines a *connected client*:
@@ -379,8 +380,8 @@ aof.c and rdb.c
 
 As you can guess from the names, these files implement the RDB and AOF
 persistence for Redis. Redis uses a persistence model based on the `fork()`
-system call in order to create a thread with the same (shared) memory
-content of the main Redis thread. This secondary thread dumps the content
+system call in order to create a process with the same (shared) memory
+content of the main Redis process. This secondary process dumps the content
 of the memory on disk. This is used by `rdb.c` to create the snapshots
 on disk and by `aof.c` in order to perform the AOF rewrite when the
 append only file gets too big.
@@ -451,9 +452,9 @@ Other C files
 * `anet.c` is a library to use POSIX networking in a simpler way compared to the raw interface exposed by the kernel.
 * `dict.c` is an implementation of a non-blocking hash table which rehashes incrementally.
 * `scripting.c` implements Lua scripting. It is completely self-contained and isolated from the rest of the Redis implementation and is simple enough to understand if you are familiar with the Lua API.
-* `cluster.c` implements the Redis Cluster. Probably a good read only after being very familiar with the rest of the Redis code base. If you want to read `cluster.c` make sure to read the [Redis Cluster specification][3].
+* `cluster.c` implements the Redis Cluster. Probably a good read only after being very familiar with the rest of the Redis code base. If you want to read `cluster.c` make sure to read the [Redis Cluster specification][4].
 
-[3]: https://redis.io/topics/cluster-spec
+[4]: https://redis.io/topics/cluster-spec
 
 Anatomy of a Redis command
 ---
